@@ -7,7 +7,8 @@ require('dotenv').config();
 const { PG_DATABASE, PG_USERNAME, PG_PASSWORD, PG_HOST } = process.env;
 const db = new Sequelize(PG_DATABASE, PG_USERNAME, PG_PASSWORD, {
   host: PG_HOST,
-  dialect: 'postgres'
+  dialect: 'postgres',
+  dialectModule: require('pg')
 });
 
 // Load all models in folder

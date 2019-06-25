@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "build": "rm -rf build && cd ./frontend && npm install && npm run build && mv build ../ && cd ../",
+    "build": "npm install && rm -rf build && cd ./frontend && npm install && npm run build && mv build ../ && cd ../",
     "now-build": "npm run build"
   },
   "keywords": [],

@@ -8,6 +8,7 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const db = require('./models');
 
+const PORT = process.env.PORT || 4000;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -25,7 +26,6 @@ const server = new ApolloServer({
 });
 const app = express();
 app.use(cors());
-server.applyMiddleware({ app });
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'build')));
@@ -34,8 +34,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+server.applyMiddleware({ app });
+
 db.sync().then(() => {
-  app.listen({ port: 4000 }, () => {
-    console.log("\x1b[36m", `🚀 Server ready at http://localhost:4000`);
+  app.listen({ port: PORT }, () => {
+    console.log("\x1b[36m", `🚀 Server ready at http://localhost:${PORT}`);
   });
 });

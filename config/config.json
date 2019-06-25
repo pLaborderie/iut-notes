@@ -5,6 +5,7 @@
     "database": "iut_notes",
     "host": "127.0.0.1",
     "dialect": "postgres",
+    "dialectModule": "require('pg')",
     "operatorsAliases": false
   },
   "test": {
@@ -13,6 +14,7 @@
     "database": "iut_notes_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
+    "dialectModule": "require('pg')",
     "operatorsAliases": false
   },
   "production": {
@@ -21,6 +23,7 @@
     "database": "iut_notes",
     "host": "127.0.0.1",
     "dialect": "postgres",
+    "dialectModule": "require('pg')",
     "operatorsAliases": false
   }
 }
