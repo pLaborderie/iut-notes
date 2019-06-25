@@ -1,6 +1,8 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express')
 const path = require('path');
+const cors = require('cors');
+
 const { getUser } = require('./helpers/jwt');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
@@ -22,15 +24,18 @@ const server = new ApolloServer({
   }
 });
 const app = express();
+app.use(cors());
 server.applyMiddleware({ app });
 
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 
 db.sync().then(() => {
   app.listen({ port: 4000 }, () => {
-    console.log("\x1b[36m", `🚀 Server ready at http://localhost:${port}`);
+    console.log("\x1b[36m", `🚀 Server ready at http://localhost:4000`);
   });
 });
