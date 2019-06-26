@@ -18,6 +18,19 @@ module.exports = {
         }]
       });
     },
+    me: async (_, __, { db, user }) => {
+      if (!user) {
+        throw new AuthenticationError('User not logged in.');
+      }
+      try {
+        const data = await db.users.findByPk(user.id);
+        if (!data) return ApolloError('User does not exist', 404);
+        const { name, email, id } = data;
+        return { name, email, id };
+      } catch (err) {
+        throw new ApolloError(err, '500');
+      }
+    }
   },
   Mutation: {
     addCategory: (_, params, { db }) => {
