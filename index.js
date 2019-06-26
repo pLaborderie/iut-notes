@@ -25,6 +25,12 @@ const server = new ApolloServer({
   }
 });
 const app = express();
+app.use(require('forest-express-sequelize').init({
+  modelsDir: __dirname + '/models',
+  envSecret: process.env.FOREST_ENV_SECRET,
+  authSecret: process.env.FOREST_AUTH_SECRET,
+  sequelize: db.sequelize,
+}));
 app.use(cors());
 
 if (process.env.NODE_ENV === 'production') {
@@ -35,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 server.applyMiddleware({ app });
-db.sync().then(() => {
+db.sequelize.sync().then(() => {
   app.listen({ port: PORT }, () => {
     console.log("\x1b[36m", `🚀 Server ready at http://localhost:${PORT}`);
   });

@@ -2,10 +2,11 @@ const Sequelize = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const basename = path.basename(__filename);
+let db = {};
 
 require('dotenv').config();
 const { PG_DATABASE, PG_USERNAME, PG_PASSWORD, PG_HOST } = process.env;
-const db = new Sequelize(PG_DATABASE, PG_USERNAME, PG_PASSWORD, {
+const sequelize = new Sequelize(PG_DATABASE, PG_USERNAME, PG_PASSWORD, {
   host: PG_HOST,
   dialect: 'postgres',
   dialectModule: require('pg')
@@ -19,7 +20,7 @@ fs
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
-    var model = db['import'](path.join(__dirname, file));
+    var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
@@ -29,7 +30,11 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
 db
+  .sequelize
   .authenticate()
   .then(() => {
     console.log('Connected to DB');
