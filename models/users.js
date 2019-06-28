@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     passwordRecoveryToken: {
       type: DataTypes.UUID
     },
+    tokenExpiration: {
+      type: DataTypes.INTEGER
+    },
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
