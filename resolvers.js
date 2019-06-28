@@ -18,6 +18,9 @@ module.exports = {
         }]
       });
     },
+    note: (_, { id }, { db }) => db.notes.findByPk(id, {
+      include: [{ model: db.categories, as: 'category' }]
+    }),
     me: async (_, __, { db, user }) => {
       if (!user) {
         throw new AuthenticationError('User not logged in.');

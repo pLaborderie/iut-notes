@@ -41,6 +41,7 @@ module.exports = gql`
     categories: [Category]
     users: [User]
     notes: [Note]
+    note(id: ID!): Note
     me: User
   }
 
