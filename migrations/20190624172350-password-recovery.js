@@ -9,12 +9,7 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.sequelize.transaction(t => {
-      return Promise.all([
-        queryInterface.addColumn('users', 'passwordRecoveryToken', Sequelize.UUID),
-        queryInterface.addColumn('users', 'tokenExpiration', Sequelize.INTEGER)
-      ]);
-    });
+    return queryInterface.addColumn('users', 'tokenExpiration', Sequelize.INTEGER);
   },
 
   down: (queryInterface, Sequelize) => {
@@ -25,11 +20,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return queryInterface.sequelize.transaction(t => {
-      return Promise.all([
-        queryInterface.removeColumn('users', 'passwordRecoveryToken'),
-        queryInterface.removeColumn('users', 'tokenExpiration')
-      ]);
-    });
+    return queryInterface.removeColumn('users', 'tokenExpiration');
   }
 };
