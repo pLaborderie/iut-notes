@@ -9,6 +9,7 @@ const resolvers = require('./resolvers');
 const db = require('./models');
 
 const PORT = process.env.PORT || 4000;
+console.log(process.env);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
