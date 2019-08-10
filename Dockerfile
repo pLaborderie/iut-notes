@@ -1,7 +1,8 @@
 # Installing nodejs
 FROM node:10-alpine
 RUN apk --no-cache add --virtual native-deps \
-  make python gcc postgresql-dev g++
+  make python gcc g++
+RUN apk add postgresql-dev
 
 # Installing app
 COPY . /app
