@@ -13,4 +13,4 @@ RUN npm run build
 RUN mv build ../
 RUN apk del native-deps
 WORKDIR /app
-ENTRYPOINT ["/bin/bash", "-c", "node index.js"]
+ENTRYPOINT ["/bin/sh", "-c", "node index.js"]
