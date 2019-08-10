@@ -15,6 +15,7 @@ jobs:
           command: |
             echo ${CIRCLE_BUILD_NUM}
             echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            source $BASH_ENV
       - setup_remote_docker
       - run:
           name: Build and push Docker image
