@@ -41,12 +41,8 @@ jobs:
       - run:
         name: Deploy app to AWS
         command: |
-        ssh -o StrictHostKeyChecking=no ubuntu@iut-notes.fr "bash ~/serve.sh"
-
+          ssh -o StrictHostKeyChecking=no ubuntu@iut-notes.fr "bash ~/serve.sh"
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: yarn test
