@@ -10,19 +10,13 @@ jobs:
       - image: docker:17.05.0-ce-git
     steps:
       - checkout
-      - run:
-          name: Setup Env
-          command: |
-            echo ${CIRCLE_BUILD_NUM}
-            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
-            source $BASH_ENV
       - setup_remote_docker
       - run:
           name: Build and push Docker image
           command: |
-            docker build -t plaborderie/$IMAGE_NAME:$TAG .
+            docker build -t plaborderie/$IMAGE_NAME:0.1.${CIRCLE_BUILD_NUM} .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push plaborderie/$IMAGE_NAME:$TAG
+            docker push plaborderie/$IMAGE_NAME:0.1.${CIRCLE_BUILD_NUM}
       - run:
           name: Deploy app to AWS
           command: |
