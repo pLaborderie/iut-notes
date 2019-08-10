@@ -8,7 +8,6 @@ COPY . /app
 WORKDIR /app
 RUN npm install
 WORKDIR /app/frontend
-RUN pwd
 RUN npm install --production
 RUN npm run build
 RUN mv build ../
