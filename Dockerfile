@@ -10,7 +10,6 @@ WORKDIR /app/frontend
 RUN npm install --production && apk del native-deps
 RUN npm run build
 RUN mv build ../
-
-# Running server
 WORKDIR /app
+RUN npm install --production
 ENTRYPOINT ["/bin/bash", "-c", "node index.js"]
