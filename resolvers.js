@@ -7,15 +7,17 @@ module.exports = {
   Query: {
     categories: (_, __, { db }) => db.categories.findAll(),
     users: (_, __, { db }) => db.users.findAll(),
-    notes: async (_, __, { db }) => {
-      return db.notes.findAll({
+    notes: async (_, { offset, limit }, { db }) => {
+      return db.notes.findAndCountAll({
         include: [{
           model: db.categories,
           as: 'category',
         }, {
           model: db.users,
           as: 'author',
-        }]
+        }],
+        offset,
+        limit
       });
     },
     note: (_, { id }, { db }) => db.notes.findByPk(id, {

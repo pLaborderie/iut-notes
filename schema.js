@@ -28,6 +28,11 @@ module.exports = gql`
     updatedAt: String
   }
 
+  type PaginatedNote {
+    count: Int!
+    rows: [Note]
+  }
+
   enum Semester {
     S1
     S2
@@ -40,7 +45,7 @@ module.exports = gql`
   type Query {
     categories: [Category]
     users: [User]
-    notes: [Note]
+    notes(offset: Int, limit: Int): PaginatedNote
     note(id: ID!): Note
     me: User
   }
