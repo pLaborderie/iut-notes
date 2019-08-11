@@ -5,9 +5,10 @@ const basename = path.basename(__filename);
 let db = {};
 
 require('dotenv').config();
-const { PG_DATABASE, PG_USERNAME, PG_PASSWORD, PG_HOST } = process.env;
+const { PG_DATABASE, PG_USERNAME, PG_PASSWORD, PG_HOST, PG_PORT } = process.env;
 const sequelize = new Sequelize(PG_DATABASE, PG_USERNAME, PG_PASSWORD, {
   host: PG_HOST,
+  port: PG_PORT || 5432,
   dialect: 'postgres',
   dialectModule: require('pg')
 });
