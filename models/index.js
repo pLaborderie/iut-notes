@@ -11,6 +11,9 @@ const sequelize = new Sequelize(PG_DATABASE, PG_USERNAME, PG_PASSWORD, {
   port: PG_PORT || 5432,
   ssl: true,
   dialect: 'postgres',
+  dialectOptions: {
+    ssl: true,
+  },
   dialectModule: require('pg')
 });
 

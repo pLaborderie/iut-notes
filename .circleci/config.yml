@@ -24,6 +24,6 @@ jobs:
             docker push plaborderie/$IMAGE_NAME:0.1.${CIRCLE_BUILD_NUM}
             docker push plaborderie/$IMAGE_NAME:latest
       - run:
-          name: Deploy app to AWS
+          name: Deploy app to remote server
           command: |
-            ssh -o StrictHostKeyChecking=no ubuntu@iut-notes.fr "bash ~/serve.sh"
+            ssh -o StrictHostKeyChecking=no root@iut-notes.fr "bash ~/serve.sh"
