@@ -1,5 +1,8 @@
 # IUT Notes
 
+## Statut CircleCI
+[![CircleCI](https://circleci.com/gh/pLaborderie/iut-notes/tree/master.svg?style=svg)](https://circleci.com/gh/pLaborderie/iut-notes/tree/master)
+
 ## Objectifs
 L'application IUT Notes a pour objectif de faciliter la prise de notes en cours, ainsi que leur partage
 avec les autres membres de l'IUT. Pour l'instant, uniquement l'IUT Informatique de Bayonne et du Pays Basque
