@@ -2,22 +2,32 @@ const { ApolloError, AuthenticationError } = require('apollo-server-express');
 const bcrypt = require('bcrypt');
 const uuidv4 = require('uuid/v4');
 const { createJwt } = require('./helpers/jwt');
-
+const db = require('./models');
+const { Op } = db.Sequelize
 module.exports = {
   Query: {
     categories: (_, __, { db }) => db.categories.findAll(),
     users: (_, __, { db }) => db.users.findAll(),
-    notes: async (_, { offset, limit }, { db }) => {
+    notes: async (_, { offset, limit, semester, category, title }, { db }) => {
+      const catFilters = {};
+      const noteFilters = {};
+      console.log(semester);
+      if (semester && semester !== 'Tous') catFilters.semester = semester;
+      if (category && category !== 'Toutes') catFilters.id = category;
+      if (title) noteFilters.title = { [Op.substring]: title };
+      console.log(catFilters);
       return db.notes.findAndCountAll({
         include: [{
           model: db.categories,
           as: 'category',
+          where: catFilters,
         }, {
           model: db.users,
           as: 'author',
         }],
         offset,
-        limit
+        limit,
+        where: noteFilters,
       });
     },
     note: (_, { id }, { db }) => db.notes.findByPk(id, {
