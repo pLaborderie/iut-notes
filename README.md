@@ -30,4 +30,4 @@ Veuillez respecter la structure mise en place :
 - Une fois la pull request mergée sur master, une nouvelle image docker est taggée et déployée sur le serveur automatiquement.
 
 ## Dons
-Un (Patreon)[https://patreon.com/plaborderie] a été ouvert pour m'aider à faire évoluer IUT Notes.
+Un [Patreon](https://patreon.com/plaborderie) a été ouvert pour m'aider à faire évoluer IUT Notes.
