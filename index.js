@@ -17,7 +17,13 @@ const server = new ApolloServer({
     const auth = (req.headers.authorization || '').split(' ');
     const user = (() => {
       if (auth.length > 1) {
-        return getUser(auth[1]);
+        try {
+          return getUser(auth[1]);
+        } catch (err) {
+          if (err.name === 'TokenExpiredError') {
+            throw new ApolloError(err.name, '401');
+          }
+        }
       }
       return null;
     })();

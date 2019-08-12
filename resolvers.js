@@ -11,11 +11,9 @@ module.exports = {
     notes: async (_, { offset, limit, semester, category, title }, { db }) => {
       const catFilters = {};
       const noteFilters = {};
-      console.log(semester);
       if (semester && semester !== 'Tous') catFilters.semester = semester;
       if (category && category !== 'Toutes') catFilters.id = category;
       if (title) noteFilters.title = { [Op.substring]: title };
-      console.log(catFilters);
       return db.notes.findAndCountAll({
         include: [{
           model: db.categories,
