@@ -7,7 +7,7 @@ module.exports = {
     }
     const verifyOptions = {
       issuer: 'IUT Notes',
-      expiresIn: 10,
+      expiresIn: '7d',
       algorithm: ['RS256']
     };
     return jwt.verify(token, process.env.JWT_PUBLIC, verifyOptions);
@@ -19,7 +19,7 @@ module.exports = {
     const { name, email, id } = user;
     const signOptions = {
       issuer: 'IUT Notes',
-      expiresIn: 10,
+      expiresIn: '7d',
       algorithm: 'RS256'
     };
     return jwt.sign({ name, email, id }, process.env.JWT_PRIVATE, signOptions);
