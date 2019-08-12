@@ -38,7 +38,7 @@ module.exports = {
       }
       try {
         const data = await db.users.findByPk(user.id);
-        if (!data) return ApolloError('User does not exist', 404);
+        if (!data) throw new ApolloError('User does not exist', 404);
         const { name, email, id } = data;
         return { name, email, id };
       } catch (err) {
