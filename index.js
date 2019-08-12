@@ -20,9 +20,7 @@ const server = new ApolloServer({
         try {
           return getUser(auth[1]);
         } catch (err) {
-          if (err.name === 'TokenExpiredError') {
-            throw new ApolloError(err.name, '401');
-          }
+          return { error: err.name };
         }
       }
       return null;

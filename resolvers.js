@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const uuidv4 = require('uuid/v4');
 const { createJwt } = require('./helpers/jwt');
 const db = require('./models');
+const { handleAuthError } = require('./helpers/auth');
 const { Op } = db.Sequelize
 module.exports = {
   Query: {
@@ -46,7 +47,8 @@ module.exports = {
     }
   },
   Mutation: {
-    addCategory: (_, params, { db }) => {
+    addCategory: (_, params, { db, user }) => {
+      handleAuthError(user);
       return db.categories.create(params);
     },
     addUser: async (_, { name, email, password }, { db }) => {
@@ -63,9 +65,7 @@ module.exports = {
       }
     },
     addNote: async (_, { title, content, category }, { db, user }) => {
-      if (!user) {
-        throw new AuthenticationError('Please login to create a note.');
-      }
+      handleAuthError(user);
       const newNote = await db.notes.create({
         title,
         content,
