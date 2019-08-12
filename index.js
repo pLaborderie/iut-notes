@@ -26,12 +26,6 @@ const server = new ApolloServer({
 });
 const app = express();
 app.use(cors());
-app.use(require('forest-express-sequelize').init({
-  modelsDir: __dirname + '/models',
-  envSecret: process.env.FOREST_ENV_SECRET,
-  authSecret: process.env.FOREST_AUTH_SECRET,
-  sequelize: db.sequelize,
-}));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'build')));
