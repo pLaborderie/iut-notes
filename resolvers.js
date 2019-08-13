@@ -74,6 +74,26 @@ module.exports = {
       });
       return newNote;
     },
+    editNote: async (_, { title, content, category, id }, { db, user }) => {
+      handleAuthError(user);
+      const note = await db.notes.findByPk(id);
+      if (note.authorId !== user.id) {
+        throw new AuthenticationError('Only the author can update this note.');
+      }
+      await db.notes.update({ title, content, categoryId: category }, {
+        where: { id }
+      });
+      return id;
+    },
+    deleteNote: async (_, { id }, { db, user }) => {
+      handleAuthError(user);
+      const note = await db.notes.findByPk(id);
+      if (note.authorId !== user.id) {
+        throw new AuthenticationError('Only the author can delete this note.');
+      }
+      await db.notes.destroy({ where: { id } });
+      return id;
+    },
     logIn: async (_, { email, password }, context) => {
       if (context.user) {
         throw new ApolloError('User is already logged in.', '500');

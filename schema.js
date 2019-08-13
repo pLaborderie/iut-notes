@@ -54,6 +54,8 @@ module.exports = gql`
     addCategory(name: String!, semester: Semester!): Category
     addUser(name: String!, email: String!, password: String!): User
     addNote(title: String!, content: String!, category: ID!): Note
+    editNote(id: ID!, title: String, content: String, category: ID): ID
+    deleteNote(id: ID!): ID
     logIn(email: String!, password: String!): String
     recoverPassword(email: String!): String
     changePassword(recoveryToken: String!, password: String!): User
