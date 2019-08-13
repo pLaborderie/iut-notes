@@ -88,6 +88,26 @@ module.exports = {
       });
       return id;
     },
+    editUser: async (_, { name, email }, { db, user }) => {
+      handleAuthError(user);
+      await db.users.update({ name, email }, { where: { id: user.id } });
+      return user.id;
+    },
+    editPassword: async (_, { oldPassword, newPassword }, { db, user }) => {
+      handleAuthError(user);
+      const userData = await db.users.findByPk(user.id);
+      if (!userData) {
+        throw new AuthenticationError('User does not exist');
+      }
+      const match = await bcrypt.compare(oldPassword, userData.password);
+      if (!match) {
+        throw new AuthenticationError('Wrong password');
+      }
+      // Generate new password hash
+      const hash = await bcrypt.hash(newPassword, 10);
+      await db.users.update({ password: hash }, { where: { id: user.id } });
+      return 'Password updated';
+    },
     deleteNote: async (_, { id }, { db, user }) => {
       handleAuthError(user);
       const note = await db.notes.findByPk(id);
@@ -96,6 +116,20 @@ module.exports = {
       }
       await db.notes.destroy({ where: { id } });
       return id;
+    },
+    deleteUser: async (_, { password }, { db, user }) => {
+      handleAuthError(user);
+      const userData = await db.users.findByPk(user.id);
+      if (!userData) throw new AuthenticationError('User does not exist');
+      const match = await bcrypt.compare(password, userData.password);
+      if (!match) {
+        throw new AuthenticationError('Wrong password');
+      }
+      // Delete all notes
+      await db.notes.destroy({ where: { authorId: user.id } });
+      // Delete account
+      await db.users.destroy({ where: { id: user.id } });
+      return 'Account deleted.';
     },
     logIn: async (_, { email, password }, context) => {
       if (context.user) {
