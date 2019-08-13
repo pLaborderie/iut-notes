@@ -9,12 +9,14 @@ module.exports = {
   Query: {
     categories: (_, __, { db }) => db.categories.findAll(),
     users: (_, __, { db }) => db.users.findAll(),
-    notes: async (_, { offset, limit, semester, category, title }, { db }) => {
+    notes: async (_, { offset, limit, semester, category, title, fromUser }, { db, user }) => {
       const catFilters = {};
+      const authorFilters = {};
       const noteFilters = {};
       if (semester) catFilters.semester = semester;
       if (category) catFilters.id = category;
       if (title) noteFilters.title = { [Op.substring]: title };
+      if (user && user.id && fromUser) authorFilters.id = user.id;
       return db.notes.findAndCountAll({
         include: [{
           model: db.categories,
@@ -23,6 +25,7 @@ module.exports = {
         }, {
           model: db.users,
           as: 'author',
+          where: authorFilters,
         }],
         offset,
         limit,

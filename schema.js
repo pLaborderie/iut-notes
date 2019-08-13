@@ -45,7 +45,7 @@ module.exports = gql`
   type Query {
     categories: [Category]
     users: [User]
-    notes(offset: Int, limit: Int, semester: String, category: ID, title: String): PaginatedNote
+    notes(offset: Int, limit: Int, semester: String, category: ID, title: String, fromUser: Boolean): PaginatedNote
     note(id: ID!): Note
     me: User
   }
