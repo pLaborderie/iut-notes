@@ -105,10 +105,11 @@ module.exports = {
       }
       // Check the password
       const match = await bcrypt.compare(password, user.password);
-      if (match) {
-        // Send back JWT
-        return createJwt(user);
+      if (!match) {
+        throw new AuthenticationError('User does not exist');
       }
+      // Send back JWT
+      return createJwt(user);
     },
     recoverPassword: async (_, { email }, { db }) => {
       const user = await db.users.findOne({ where: { email } });
