@@ -42,17 +42,21 @@ module.exports = {
       try {
         const data = await db.users.findByPk(user.id);
         if (!data) throw new ApolloError('User does not exist', 404);
-        const { name, email, id } = data;
-        return { name, email, id };
+        const { name, email, id, roles } = data;
+        return { name, email, id, roles };
       } catch (err) {
         throw new ApolloError(err, '500');
       }
     }
   },
   Mutation: {
-    addCategory: (_, params, { db, user }) => {
-      handleAuthError(user, 'admin');
-      return db.categories.create(params);
+    addCategory: async (_, params, { db, user }) => {
+      handleAuthError(user);
+      const data = await db.users.findByPk(user.id);
+      if (!data.roles.includes('admin')) {
+        throw new ApolloError('Unauthorized', '403');
+      }
+      return await db.categories.create(params);
     },
     addUser: async (_, { name, email, password }, { db }) => {
       try {
