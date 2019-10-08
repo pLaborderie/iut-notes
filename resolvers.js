@@ -51,7 +51,7 @@ module.exports = {
   },
   Mutation: {
     addCategory: (_, params, { db, user }) => {
-      handleAuthError(user);
+      handleAuthError(user, 'admin');
       return db.categories.create(params);
     },
     addUser: async (_, { name, email, password }, { db }) => {
@@ -159,8 +159,8 @@ module.exports = {
         passwordRecoveryToken: recoveryToken,
         tokenExpiration: Date.now() + 3600000 // 1 hour
       }, {
-          where: { id: user.id }
-        });
+        where: { id: user.id }
+      });
       return recoveryToken;
     },
     changePassword: async (_, { recoveryToken, password }, { db }) => {
