@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     tokenExpiration: {
       type: DataTypes.INTEGER
     },
+    roles: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
+    },
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
