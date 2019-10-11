@@ -48,6 +48,7 @@ module.exports = gql`
     users: [User]
     notes(offset: Int, limit: Int, semester: String, category: ID, title: String, fromUser: Boolean): PaginatedNote
     note(id: ID!): Note
+    notePdf(id: ID!): String
     me: User
   }
 

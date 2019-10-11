@@ -4,7 +4,9 @@ const uuidv4 = require('uuid/v4');
 const { createJwt } = require('./helpers/jwt');
 const db = require('./models');
 const { handleAuthError } = require('./helpers/auth');
+const { getPdfFromNote } = require('./helpers/pdf');
 const { Op } = db.Sequelize
+
 module.exports = {
   Query: {
     categories: (_, __, { db }) => db.categories.findAll(),
@@ -35,6 +37,18 @@ module.exports = {
     note: (_, { id }, { db }) => db.notes.findByPk(id, {
       include: [{ model: db.categories, as: 'category' }]
     }),
+    notePdf: async (_, { id }, { db }) => {
+      const note = await db.notes.findByPk(id);
+      if (!note) {
+        throw new ApolloError('Note not found', '404');
+      }
+      try {
+        const buffer = await getPdfFromNote(note.content);
+        return buffer.toString('base64');
+      } catch (e) {
+        throw new ApolloError('Error generating PDF from note', '500');
+      }
+    },
     me: async (_, __, { db, user }) => {
       if (!user) {
         throw new AuthenticationError('User not logged in.');
