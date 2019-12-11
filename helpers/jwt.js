@@ -10,7 +10,7 @@ module.exports = {
       expiresIn: '7d',
       algorithm: ['RS256']
     };
-    return jwt.verify(token, process.env.JWT_PUBLIC, verifyOptions);
+    return jwt.verify(token, process.env.JWT_PUBLIC.replace(/\\n/g, '\n'), verifyOptions);
   },
   createJwt(user) {
     if (!user) {
@@ -22,6 +22,6 @@ module.exports = {
       expiresIn: '7d',
       algorithm: 'RS256'
     };
-    return jwt.sign({ name, email, id }, process.env.JWT_PRIVATE, signOptions);
+    return jwt.sign({ name, email, id }, process.env.JWT_PRIVATE.replace(/\\n/g, '\n'), signOptions);
   }
 }
