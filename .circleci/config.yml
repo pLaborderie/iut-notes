@@ -26,4 +26,4 @@ jobs:
       - run:
           name: Deploy app to remote server
           command: |
-            ssh -o StrictHostKeyChecking=no root@iut-notes.fr "bash ~/serve.sh"
+            ssh -o StrictHostKeyChecking=no root@iut-notes.fr "bash docker stack deploy --with-registry-auth -c <(docker-compose -f iut-notes-stack.yml config) iut_notes"
