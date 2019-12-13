@@ -1,0 +1,40 @@
+version: '2'
+services:
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    depends_on:
+      - app
+    volumes:
+      - ./frontend:/usr/src/app
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app
+      - /app/node_modules/
+    environment: 
+      - JWT_PRIVATE
+      - JWT_PUBLIC
+      - PG_DATABASE
+      - PG_USERNAME
+      - PG_PASSWORD
+      - PG_HOST
+      - PG_PORT
+      - NODE_ENV
+    depends_on: 
+      - db
+  db:
+    image: postgres
+    restart: always
+    environment: 
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_DB: ${PG_DATABASE}
+    
