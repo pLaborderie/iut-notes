@@ -1,0 +1,54 @@
+version: '3'
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    external: false
+
+volumes:
+  iut_notes_db:
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_DB: ${PG_DATABASE}
+    networks:
+      - internal
+    volumes:
+      - iut_notes_db:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints: [node.id==wia93afhl91g7ek1kvtump9gt]
+  web:
+    image: plaborderie/iut-notes
+    networks:
+      - traefik-public
+      - internal
+    environment:
+      - JWT_PRIVATE
+      - JWT_PUBLIC
+      - PG_HOST
+      - PG_USERNAME
+      - PG_PASSWORD
+      - PG_PORT
+      - PG_DATABASE
+      - NODE_ENV
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.backend=iut_notes_app
+        - traefik.port=4000
+        - traefik.frontend.rule=Host:iut-notes.paul-laborderie.com
+        - traefik.enable=true
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
