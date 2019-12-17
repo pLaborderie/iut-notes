@@ -26,5 +26,5 @@ jobs:
       - run:
           name: Deploy app to remote server
           command: |
-            ssh -o StrictHostKeyChecking=no -fnL localhost:2374:/var/run/docker.sock ubuntu@52.210.74.124
+            ssh -o StrictHostKeyChecking=no -fNL localhost:2374:/var/run/docker.sock ubuntu@52.210.74.124
             docker -H localhost:2374 stack deploy --with-registry-auth -c docker-stack.yml iut-notes
