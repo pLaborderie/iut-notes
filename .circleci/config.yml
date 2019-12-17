@@ -26,4 +26,4 @@ jobs:
       - run:
           name: Deploy app to remote server
           command: |
-            ssh -o StrictHostKeyChecking=no ubuntu@paul-laborderie.com "cd apps/iut-notes && docker stack deploy --with-registry-auth -c <(docker-compose config) iut-notes"
+            ssh -o StrictHostKeyChecking=no ubuntu@52.210.74.124 "cd apps/iut-notes && docker stack deploy --with-registry-auth -c <(docker-compose config) iut-notes"
